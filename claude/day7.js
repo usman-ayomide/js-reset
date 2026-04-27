@@ -1,4 +1,4 @@
-/*const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 numbers.forEach(function(numbers){
     console.log(numbers);
@@ -16,7 +16,6 @@ numbers.forEach(numbers => {console.log(numbers);});
 let doubledArrow = numbers.map(num => {return num * 2});
 let evenArrow = numbers.filter(num => {return num % 2 === 0});
 
-*/
 
 const students = [
     { name: "Aisha", score: 45 },
