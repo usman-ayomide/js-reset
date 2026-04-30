@@ -8,16 +8,41 @@
 7. add images to each drum 
 8. store the inner html of each drum into a variable
 9. add a switch case to play each audio
+10. add event listener to listen for keypress
+11. create a function that takes in key as parameter and relocate the switch statement into it
+12. call the new function inside the click event listener passing in button inerr html
+13. log event,key in the key event listener
+14. outside the loop, create a function that animates the button, it should take inn thr current key being preesed
+15. call the function in the two sectons above 
+16. add a classlist to your css file
+17. get the class of the key being pressed, add the classlist to it, store it in a variable
+18. add a timeout function to remove the class after some seconds
 */
 
 numberOfDrum = document.querySelectorAll(".drum").length;
 
 for(var  i = 0; i < numberOfDrum; i++){
-
+    
+    //detecting click to play sound
     document.querySelectorAll(".drum")[i].addEventListener("click", function (){
        
         var buttonInnerHTML = this.innerHTML;
-        switch (buttonInnerHTML) {
+
+        makeSound(buttonInnerHTML);
+        animation(buttonInnerHTML);
+    });
+
+
+    // detecting key to play sound
+    document.addEventListener("keydown", function(event){
+        
+        makeSound(event.key);
+        animation(event.key);
+    });
+
+    
+    function makeSound(key){
+        switch (key) {
             case "w":
             var tom1 = new Audio("./tom-1.mp3");
             tom1.play();
@@ -54,7 +79,17 @@ for(var  i = 0; i < numberOfDrum; i++){
             break; 
             
             default:
-                console.log(buttonInnerHTML);
+                console.log(key);
         }
-    });
+    }
+}
+
+function animation(currentKey){
+    var activeButton = document.querySelector("." + currentKey);
+    
+    activeButton.classList.add("pressed");
+
+    setTimeout(function(){
+        activeButton.classList.remove("pressed");
+    }, 100);
 }
