@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+  const canvas = document.querySelector("#draw");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;//set to size of window
+  canvas.height = window.innerHeight;
+  ctx.strokeStyle = "#BADA55";
+  ctx.lineJoin = "round"; //end of the line
+  ctx.lineCap = "round";//line meets another line
+  ctx.lineWidth = 100;
+  ctx.globalCompositeOperation = "multiply";
+
+  let isDrawing = false;
+  let lastX = 0; //starting x
+  let lastY = 0;//starting y
+  let hue = 0;
+  let direction = true;
+
+  function draw(event){
+    if(!isDrawing) return;
+    console.log(event);
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(event.offsetX, event.offsetY);
+    ctx.stroke();
+    [lastX, lastY] = [event.offsetX, event.offsetY];
+
+    hue++;
+    if(hue >= 360){
+      hue = 0;
+    }
+
+    if(ctx.lineWidth >= 100 || ctx.lineWidth <= 1){
+      direction = !direction;
+    }
+
+
+    if(direction){
+      ctx.lineWidth++;
+    }
+    else{
+      ctx.lineWidth--;
+    }
+  }
+
+
+  canvas.addEventListener("mousedown", (event) => {
+    isDrawing = true;
+    [lastX, lastY] = [event.offsetX, event.offsetY];
+  });
+
+  canvas.addEventListener("mousemove", draw);
+  
+  canvas.addEventListener("mouseup", () => isDrawing = false);
+  canvas.addEventListener("mouseout", () => isDrawing = false);
+
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+</style>
+`
+1. get the canvas
+2. get the context, set it to 2d and store it in a variable
+3. set the width and height to window size
+4. give the stroke style an initial color
+5. set the cap and join to round
+
+1. create a variable to determine drawing
+2. set x and y axis to 0
+
+1. create a function for drawing, pass in the event
+return when drawing is not false
+
+1. listen to mouse move on draw function
+2. listen to moouse up, out and down then set them to the proper boolean
+`
+</body>
+</html>
