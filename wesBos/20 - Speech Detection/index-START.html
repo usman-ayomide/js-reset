@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Speech Detection</title>
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+
+  <div class="words" contenteditable>
+  </div>
+
+<script>
+  window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  const recognition = new SpeechRecognition();
+  recognition.interimResults = true;//transcription
+
+  let p = document.createElement("p");// create the paragraph you want to add your words too
+  
+  const words = document.querySelector(".words");
+  words.appendChild(p);//adding the words into the paragraphs
+
+  recognition.addEventListener("result", event => {// listen for the result
+    const transcript = Array.from(event.results) //turn the event result into an array
+      .map(result => result[0])//map it to get the first element child
+      .map(result => result.transcript)// now map it again to get the transcript of what you're saying
+      .join(""); // join the strings together
+      
+      
+      p.textContent = transcript;
+      if(event.results[0].isFinal){
+        p = document.createElement("p");
+        words.appendChild(p);
+      }
+
+      if(transcript.includes("get the weather")){
+        alert("getting the weather");
+      }
+      console.log(transcript);
+  });
+
+  //when you stop speaking, it no longer transcripts, so you listen once again  for the end 
+  //and call the function
+  recognition.addEventListener("end", () => {
+    recognition.start();
+  });
+
+  recognition.start();
+
+</script>
+
+
+  <style>
+    html {
+      font-size: 10px;
+    }
+
+    body {
+      background: #ffc600;
+      font-family: 'helvetica neue';
+      font-weight: 200;
+      font-size: 20px;
+    }
+
+    .words {
+      max-width: 500px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+      padding: 1rem 2rem 1rem 5rem;
+      background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, #fff)) 0 4px;
+      background-size: 100% 3rem;
+      position: relative;
+      line-height: 3rem;
+    }
+
+    p {
+      margin: 0 0 3rem;
+    }
+
+    .words:before {
+      content: '';
+      position: absolute;
+      width: 4px;
+      top: 0;
+      left: 30px;
+      bottom: 0;
+      border: 1px solid;
+      border-color: transparent #efe4e4;
+    }
+  </style>
+
+</body>
+</html>
