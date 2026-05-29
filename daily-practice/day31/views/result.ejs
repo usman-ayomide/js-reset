@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+</head>
+<body>
+    <p>Average score: <%= result %> </p>
+
+    <% if(result >= 90){ %>
+        <p> Grade: A</p>
+    <% }else if(result > 74 && result < 90){ %>
+        <p>Grade: B</p>
+    <% }else if(result > 59 && result < 75){ %>
+        <p>Grade: C</p>
+    <% }else{ %>
+        <p>Grade: F</p>
+    <% } %>
+    
+
+    <% if(result >= 60){ %>
+        <p>Pass</p>
+    <% }else{ %>
+        <p>Fail</p>
+    <% } %>
+</body>
+</html>
