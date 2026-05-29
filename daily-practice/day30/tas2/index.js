@@ -3,6 +3,7 @@ import express from "express";
 const app = express();
 const port = 3000;
 
+//homepage
 app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
@@ -14,6 +15,22 @@ app.get("/", (req, res) => {
     res.render("index.ejs", data);
 });
 
+//profile
+app.get("/profile", (req, res) =>{
+    const user = { 
+        name: "Usman", 
+        isAdmin: true, 
+        score: 85 
+    }
+    res.render("profile.ejs", user);
+});
+
+//error message
+app.get("/error", (req, res) =>{
+    res.render("error.ejs");
+});
+
 app.listen(port, () => {
+    
     console.log(`Running server on ${port}`);
 });
