@@ -8,6 +8,12 @@
 </head>
 
 <body>
+  <%if(filled === false){%>
+    <h1>Enter your name here</h1>
+  <%}else{%>
+    <h1>Your name has <%= results %> letters</h1>
+  <% } %>
+
   <!-- Write your code here -->
   <form action="/submit" method="POST">
     <input type="text" name="fName" placeholder="First name">
