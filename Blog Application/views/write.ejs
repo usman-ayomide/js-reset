@@ -1,0 +1,29 @@
+    <%-include("partials/header")%>
+
+    <div class="write-page">
+        <form action="<%= locals.foundDraft ? '/draft/' + foundDraft.id + '/edit' : "/draft" %>" 
+            method="POST" class="write-form">
+            <h2 class="write-h2">Scribble below:</h2>
+
+            <div class="write-title">
+                <label for="title"></label>
+                <textarea type="text" id="title" name="title" placeholder="Title..." ><%= locals.foundDraft ? foundDraft.title : '' %></textarea>
+            </div>
+
+            <div class="write-text">
+                <label for="body"></label>
+                <textarea type="text" id="text" name="body" required maxlength="3000" required placeholder="Content..." ><%= locals.foundDraft ? foundDraft.body : '' %></textarea>
+            </div>
+
+            <div class="write-image">
+                <label for="image"></label>
+                <input type="url" id="image" name="image" placeholder="Upload Image"
+                value="<%= locals.foundDraft ? foundDraft.image : '' %>">
+            </div>
+
+            <button type="submit" class="write-draft">Save to Draft</button>
+            <button type="submit" formaction="<%= locals.foundDraft ? '/draft/' + foundDraft.id + '/post': "/post" %>" class="write-post">Post</button>
+        </form>
+    </div>
+
+<%-include("partials/footer")%>

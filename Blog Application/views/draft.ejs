@@ -1,0 +1,33 @@
+<%-include("partials/header")%>
+
+<% if(drafts.length === 0){ %>
+    <h1 class="homepage">No drafts yet</h1>
+<% }else{ %>
+    <% drafts.forEach(draft => { %>
+        <div class="draft-page">
+            <div class="draft-content">
+                <p class="draft-paragraph"><% draft.id %></p>
+                <h1 class="draft-title"><%= draft.title %></h1>
+                <p class="draft-body"><%= draft.body %></p>
+                <img src="<%= draft.image %>" class="draft-image">
+            </div>
+
+            <div class="draft-form">
+                <form action="/draft/<%= draft.id %>/edit" method="get">
+                    <button type="submit" class="draft-edit">Edit</button>
+                </form>
+
+                <form action="/draft/<%= draft.id %>" method="POST">
+                    <button type="submit" class="draft-delete">Delete</button>
+                </form>
+            </div>
+        </div>
+    <% }); %>
+<% } %>
+
+
+
+
+
+
+<%-include("partials/footer")%>
