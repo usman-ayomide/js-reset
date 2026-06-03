@@ -1,0 +1,12 @@
+{
+  "name": "day35",
+  "version": "1.0.0",
+  "description": "Reading a json file ",
+  "license": "ISC",
+  "author": "Usman3801",
+  "type": "module",
+  "main": "day35.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "users": [
+    {
+      "name": "Aisha",
+      "score": "s101010",
+      "grade": "C"
+    },
+    {
+      "name": "Emeka",
+      "score": 122,
+      "grade": "A"
+    },
+    {
+      "name": "Fatima",
+      "score": 138,
+      "grade": "A"
+    }
+  ]
+}
