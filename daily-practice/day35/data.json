@@ -2,17 +2,17 @@
   "users": [
     {
       "name": "Aisha",
-      "score": "s101010",
+      "score": 55,
       "grade": "C"
     },
     {
       "name": "Emeka",
-      "score": 122,
-      "grade": "A"
+      "score": 82,
+      "grade": "B"
     },
     {
       "name": "Fatima",
-      "score": 138,
+      "score": 98,
       "grade": "A"
     }
   ]
