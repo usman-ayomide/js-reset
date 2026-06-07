@@ -34,7 +34,7 @@ async function numGame(){
         return;
     }
 }
-
+//added comment will work on later
 
 async function start() {
     random = Math.floor(Math.random() * 100) + 1;
