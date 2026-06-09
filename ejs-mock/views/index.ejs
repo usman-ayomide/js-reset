@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Welcome <%= user.username %></h1>
+    <p>Age: <%= user.age %></p>
+    
+    <ul>
+        <% user.skills.forEach(sk => { %>
+            <li>
+                <%= sk.name %> - <%= sk.level %> - 
+                <% if(sk.completed == true){ %>
+                    Done
+                <% }else{ %>
+                    Still learning
+                <% } %>
+            </li>
+        <% }); %>
+    </ul>
+    
+    <% if(!isLoggedIn){ %>
+        <h2>Status: Guest</h2>
+    <% }else{ %>
+        <h2>Status: Logged in</h2>
+    <% } %>
+
+    <% if(projects.length === 0){ %>
+        <h2>No projects yet</h2>
+    <% }else{ %>
+        <% projects.forEach(project =>{ %>
+            <div>
+                <h2><%= project.title %></h2>
+                <a href="/projects/<%= project.id %>" >View Project</a>
+                <p>Stack: <%= project.stack %></p>
+                <% if(project.completed == false){ %>
+                    <p>Status: In Progress</p>
+                <% }else{ %>
+                    <p>Status: Completed</p>
+                <% } %>
+            </div>
+
+            <a href="/projects/<%= project.id %>/edit">Edit</a>
+
+            <form action="/projects/<%= project.id %>/delete" method="POST">
+                <button type="submit" class="btn-delete">Delete a Project</button>
+            </form>
+            
+        <% }) %>
+    <% } %>
+
+    <a href="/projects">Add a new Project</a>
+    <a href="/tasks">View Tasks</a>
+    
+    
+
+</body>
+</html>

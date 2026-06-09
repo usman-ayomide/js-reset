@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Details</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <% if(locals.project){ %>
+    <div>
+        <h2><%= project.title %></h2>
+        <p>Stack: <%= project.stack %></p>
+        <% if(project.completed == false){ %>
+            <p>Status: In Progress</p>
+        <% }else{ %>
+            <p>Status: Completed</p>
+        <% } %>
+    </div>
+    <% }else{ %>
+    <h1>Project not found</h1>
+    <% } %>
+    <a href="/">Back home</a>
+</body>
+</html>

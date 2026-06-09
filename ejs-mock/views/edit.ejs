@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Project</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <% if(locals.project){ %>
+    <form action="/projects/<%= project.id %>/edit" method="POST">
+        <h2>Your Input</h2>
+
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="Title" name="title" required placeholder="Portfolio" value="<%= project.title %>">
+        </div>
+
+        <div class="form-group">
+            <label for="stack">Stack</label>
+            <input type="text" id="stack" name="stack" required placeholder="HTML" value="<%= project.stack %>">
+        </div>
+
+        <div class="form-group">
+            <label for="completed">Status</label>
+            <select required name="completed" id="completed">
+                <option value="">-- Please select an option --</option>
+                    <option value="true" <%= project.completed === true ? 'selected' : '' %>>Completed</option>
+                    <option value="false" <%= project.completed === false ? 'selected' : '' %>>In Progress</option>
+            </select>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+    <% }else{ %>
+    <h1>Project not found</h1>
+    <% } %>
+    <a href="/">Back home</a>
+</body>
+</html>
