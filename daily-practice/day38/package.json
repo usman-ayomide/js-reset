@@ -1,0 +1,16 @@
+{
+  "name": "day38",
+  "version": "1.0.0",
+  "description": "Using axios to fetch data",
+  "license": "ISC",
+  "author": "Usman3801",
+  "type": "module",
+  "main": "day38.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "axios": "^1.17.0",
+    "express": "^5.2.1"
+  }
+}
