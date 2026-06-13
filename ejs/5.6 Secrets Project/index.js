@@ -14,6 +14,7 @@ app.get("/", async (req, res) => {
     }
     catch(error){
         console.error("This page has no secrets", error.message || error);
+        res.render("index.ejs", { content: JSON.stringify(error.response?.data || error.message) });
     }
     
 });
