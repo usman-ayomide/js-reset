@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Angela",
+    "age": 22,
+    "grade": 60
+  },
+  {
+    "name": "Prisca",
+    "age": 23,
+    "grade": 99
+  },
+  {
+    "name": "Ella",
+    "age": 24,
+    "grade": 20
+  },
+  {
+    "name": "Liz",
+    "age": 25,
+    "grade": 40
+  },
+  {
+    "name": "Mia",
+    "age": 26,
+    "grade": 50
+  }
+]
