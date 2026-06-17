@@ -15,20 +15,6 @@ const db = new pg.Client({
 
 db.connect();
 
-let countries = [];
-let total = 0;
-
-// db.query("SELECT * FROM visited_countries", (err, res) => {
-//   if(err){
-//     console.error("Error executing query", err.stack);
-//   }
-//   else{
-//     countries = res.rows;
-//     console.log("You've been to:", countries.length);
-//     console.log(countries);
-//   }
-//   //db.end();
-// });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -36,7 +22,6 @@ app.use(express.static("public"));
 app.get("/", async (req, res) => {
 
   try{
-    total = countries.length;
     const result = await db.query("SELECT country_code FROM visited_countries");
     const codes = result.rows.map(row => row.country_code);
     
@@ -47,8 +32,11 @@ app.get("/", async (req, res) => {
   catch(error){
     console.error("Error getting countries", error.stack);
     
+    const result = await db.query("SELECT country_code FROM visited_countries");
+    const codes = result.rows.map(row => row.country_code);
+
     res.render("index.ejs", {
-      error: error.message, countries: [], total: 0
+      error: error.message, countries: codes, total: codes.length
     });
   }
 });
@@ -60,7 +48,7 @@ app.post("/add", async (req, res) => {
 
   try{
     const result = await db.query(
-      "SELECT country_code FROM countries WHERE country_name = $1;",
+      "SELECT country_code FROM countries WHERE country_name ILIKE $1;",
       [input]
     );
 
@@ -71,27 +59,28 @@ app.post("/add", async (req, res) => {
 
     const code = result.rows[0].country_code;
 
-    await db.query(
+    const duplicate = await db.query(
       "INSERT INTO visited_countries (country_code) VALUES ($1);",
       [code]
-    )
-
-    const visited = await db.query(
-      "SELECT countries.country_code FROM visited_countries JOIN countries ON visited_countries.country_code = countries.country_code;"
     );
-    
-    countries = visited.rows.map(country => country.country_code);
-    
-    console.log("You've been to:", countries.length);
 
     res.redirect("/");
   }
   catch(error){
-    console.error("Error getting countries", error.stack);
-    
-    res.render("index.ejs", {
-      error: error.message, countries: [], total: 0
-    });
+    const result = await db.query("SELECT country_code FROM visited_countries");
+    const codes = result.rows.map(row => row.country_code);
+
+    if(error.code === "23505"){
+      res.render("index.ejs", {
+        error: "You've already added that country",
+        countries: codes, total: codes.length
+      });
+    }
+    else{
+      res.render("index.ejs", {
+        error: error.message, countries: codes, total: codes.length
+      });
+    }
   }
   //db.end();
 });
