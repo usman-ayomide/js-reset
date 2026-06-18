@@ -42,29 +42,31 @@ app.get("/", async (req, res) => {
 });
 
 
-app.post("/add", async (req, res) => { 
-  const input =  req.body.country;
-  console.log(input);
+//get the input
+//query the input, select country code from countries where the name is likely to be what was input
+//handle error for when it doesn't exist
+//store the country code, into visited countries
+//check fir duplicate by querying for the country code to ascertain if it hasn't been input
+//redirect
+//catch the error
 
+app.post("/add", async (req, res) => {
+  const input = req.body.country;
   try{
-    const result = await db.query(
-      "SELECT country_code FROM countries WHERE country_name ILIKE $1;",
-      [input]
-    );
+    const result = await db.query("SELECT country_code FROM countries WHERE country_name ILIKE $1", [input]);
 
-    if(result.rows.length == 0){
-      res.status(404).send("Country does not exist");
+    if(result.rows.length === 0){
       return;
-    } 
+    }
 
-    const code = result.rows[0].country_code;
+      const codes = result.rows[0].country_code;
 
-    const duplicate = await db.query(
-      "INSERT INTO visited_countries (country_code) VALUES ($1);",
-      [code]
-    );
+      const duplicate = await db.query(
+        "INSERT INTO visited_countries (country_code) VALUES ($1);",
+        [codes]
+      );
 
-    res.redirect("/");
+      res.redirect("/");
   }
   catch(error){
     const result = await db.query("SELECT country_code FROM visited_countries");
@@ -78,7 +80,7 @@ app.post("/add", async (req, res) => {
     }
     else{
       res.render("index.ejs", {
-        error: error.message, countries: codes, total: codes.length
+        error: error.message, codes, total: codes.length
       });
     }
   }
