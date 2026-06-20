@@ -62,8 +62,16 @@ app.post("/add", async (req, res) => {
   const input = req.body.country;
   try{
     const response = await db.query("SELECT country_code FROM countries WHERE country_name ILIKE ($1)", [input]);
-    console.log(response);
-    if(response.rows.country_code !== input){
+    //console.log(response);
+
+    if(response.rows.length === 0){
+      res.redirect("/");
+    }
+    else{
+      const codes = response.rows[0].country_code;
+
+      await db.query("INSERT INTO visited_countries (country_code, user_id) VALUES ($1, $2)", [codes, currentId]);
+
       res.redirect("/");
     }
   } 
