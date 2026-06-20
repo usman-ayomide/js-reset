@@ -1,3 +1,4 @@
+//handle error 
 import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
@@ -27,14 +28,7 @@ app.get("/", async (req, res) => {
     const allUsers = response.rows;
 
     const currentUser = allUsers.find(user => user.id === currentId);
-    //console.log(currentUser);
-    //const rand = Math.floor(Math.random() * allUsers.length);
-    //const currentUser = allUsers[rand];
-    //console.log(allUsers, rand, currentUser);
-
-    //if current user exists, get the id
-    //currentId = currentUser ? currentUser.id : null;
-    //console.log(currentId);
+    
 
     //fetch visited countries
     const result = await db.query("SELECT country_code FROM visited_countries WHERE user_id = $1", [currentId]);
@@ -61,15 +55,18 @@ app.post("/add", async (req, res) => {
   //check for the name of the country typed in
   const input = req.body.country;
   try{
+    //look for country code of the input in countries
     const response = await db.query("SELECT country_code FROM countries WHERE country_name ILIKE ($1)", [input]);
-    //console.log(response);
 
+    //if country code doesnt exist
     if(response.rows.length === 0){
       res.redirect("/");
     }
     else{
+      //the country code
       const codes = response.rows[0].country_code;
 
+      //save the country code and the current user into visited countries
       await db.query("INSERT INTO visited_countries (country_code, user_id) VALUES ($1, $2)", [codes, currentId]);
 
       res.redirect("/");
@@ -82,40 +79,54 @@ app.post("/add", async (req, res) => {
 });
 
 
-// app.post("/user", async (req, res) => {
+//switch user
+app.post("/user", async (req, res) => {
+  //existing users
+  const existingUser = req.body.user;
+  //add user button
+  const addUser = req.body.add;
+  console.log(existingUser);
 
-//   try{
-//     const cUser = req.body.name;
-//     const result = await db.query("SELECT id, color FROM user WHERE name = $1", [cUser]);
-//     const resId = result.rows.id;
-//     const resColor = result.rows.color;
-//     const answer = await db.query("SELECT country_code FROM visited_countries WHERE user_id = $1)", [resId]);
-//     const codes = answer.rows.map(row => row.country_code);
-
-//     res.render("index.ejs", {
-//       countries: codes,
-//       total: codes.length,
-//       users: cUser,
-//       color: resColor
-//     });
-
-//   }
-//   catch(error){
-//     console.log(error);
-//   }  
-// });
+  try{ 
+    //if the add user button is click 
+    if(addUser){
+      res.render("new.ejs");
+    }
+    else{
+      //convert the string to number
+      currentId = parseInt(existingUser, 10);
+      res.redirect("/");
+    }
+  }
+  catch(error){
+    console.log(error);
+  }  
+});
 
 
+//add new user
+app.post("/new", async (req, res) => {
+  //new user name
+  const userName = req.body.name;
+  //preferred color
+  const userColor = req.body.color;
 
-// app.post("/new", async (req, res) => {
-//   const change = req.body.add;
+  try{
+    //add the name and color to list of users
+    const insertion = await db.query("INSERT INTO users (name, color) VALUES ($1, $2) RETURNING *", [userName, userColor]);
+    console.log(insertion);
 
-//   users.push(change);
-//   const returned = await db.query();
-//   res.redirect("/");
-//   //Hint: The RETURNING keyword can return the data that was inserted.
-//   //https://www.postgresql.org/docs/current/dml-returning.html
-// });
+    //set the id the id generated automatically
+    currentId = insertion.rows[0].id;
+
+    res.redirect("/");
+  }
+  catch (error) {
+    console.log(error);
+  }
+  //Hint: The RETURNING keyword can return the data that was inserted.
+  //https://www.postgresql.org/docs/current/dml-returning.html
+});
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
