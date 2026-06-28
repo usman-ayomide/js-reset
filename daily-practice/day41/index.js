@@ -3,6 +3,8 @@ import bodyParser from "body-parser";
 import pg from "pg";
 import bcrypt from "bcrypt";
 import session from "express-session"
+import passport from "passport";
+import { Strategy } from "passport-local";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -18,6 +20,8 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 const db = new pg.Client({
   user: process.env.DB_USER,
@@ -40,18 +44,14 @@ app.get("/login", (req, res) => {
 
 
 app.get("/dashboard", (req, res) => {
-    //save the email used to login
-   const loggedInMail = req.session.email;
 
-    //if user is logged in successfully, 
-    //show them them the homepage and the email they sued to signup
-   if(loggedInMail){
-    res.render("home.ejs", {email: loggedInMail});
-   }
-   else{
-    //if the user is not logged in, redirect them to the login page
-    res.redirect("/login");
-   }
+    if(req.isAuthenticated()){
+        res.render("home.ejs", {email: loggedInMail});
+    }
+    else{
+        //if the user is not logged in, redirect them to the login page
+        res.redirect("/login");
+    }    
 });
 
 
@@ -79,9 +79,13 @@ app.post("/register", async (req, res) => {
                     //if hashing is successful, save the login parameters into the database
                     //get the session email
                     //redirect to the dashboard
-                    await db.query("INSERT INTO users (email, password) VALUES ($1, $2)", [email, hash]);
-                    req.session.email = email;
-                    res.redirect("/dashboard");
+                    const result = await db.query("INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *", [email, hash]);
+                    const user = result.rows[0];
+
+                    req.login(user, (error) => {
+                        if(error) console.log(error);
+                        res.redirect("/dashboard");
+                    });
                 }
             });
         }
@@ -94,42 +98,51 @@ app.post("/register", async (req, res) => {
 });
 
 
-app.post("/login", async (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
-
-    try{
-        //check if the mail being used to log in exists in the database
-        const checkUser = await db.query("SELECT * FROM users WHERE email = $1", [email]);
+passport.use(new Strategy(
+    async (email, password, cb) => {
         
-        //if the mail exists, het the saved hashed password 
-        // and compare ot to the one being input by the user
-        if(checkUser.rows.length > 0){
-            const hashedPassword = checkUser.rows[0].password;
-            const checkPassword = await bcrypt.compare(password, hashedPassword);
+        try{
+            //check if the mail being used to log in exists in the database
+            const checkUser = await db.query("SELECT * FROM users WHERE email = $1", [email]);
+            
+            const user = checkUser.rows[0];
 
-            //if the password matches, save the logged in mail for session and 
-            //redirect them to the dashboard
-            if(checkPassword){
-                req.session.email = email;
-                res.redirect("/dashboard");
+            //if the mail exists, het the saved hashed password 
+            // and compare ot to the one being input by the user
+            if(checkUser.rows.length > 0){
+                const hashedPassword = checkUser.rows[0].password;
+                const checkPassword = await bcrypt.compare(password, hashedPassword);
+
+                //if the password matches, save the logged in mail for session and 
+                //redirect them to the dashboard
+                if(checkPassword){        
+                    return cb(null, user);
+                }
+                else{
+                    //if the password doesn't match, 
+                    //render the login page and tell them to try again
+                    return cb(null, false);
+                }
             }
             else{
-                //if the password doesn't match, 
-                //render the login page and tell them to try again
-                res.render("login.ejs", { error: "Incorrect password, try again." });
+                //if the mail does not exist, 
+                //redirect the user to the sign up page
+                return cb(null, false);
             }
         }
-        else{
-            //if the mail does not exist, 
-            //redirect the user to the sign up page
-            res.redirect("/register");
+        catch(error){
+            return cb(error);
         }
     }
-    catch(error){
-        console.log(error);
-    }
-});
+));
+
+passport.serializeUser((user, cb) => cb(null, user));
+passport.deserializeUser((user, cb) => cb(null, user));
+
+app.post("/login", passport.authenticate("local", {
+    successRedirect: "/dashboard",
+    failureRedirect: "/login"
+}));
 
 
 app.post("/logout", (req, res) => {
