@@ -72,7 +72,18 @@ app.get("/auth/google", passport.authenticate("google", {
 app.get("/auth/google/secrets", passport.authenticate("google", {
   successRedirect: "/secrets",
   failureRedirect: "/login",
-}))
+}));
+
+app.get("/logout", (req, res) => {
+  req.logout((err) => {
+    if(err){
+      console.log(err);
+    }
+    else{
+      res.redirect("/");
+    }
+  })
+})
 
 app.post(
   "/login",
@@ -159,7 +170,7 @@ passport.use("google",
       const result = await db.query("SELECT * FROM users WHERE email = $1", [profile.email]);
       if (result.rows.length === 0) {
           const newUser = await db.query(
-            "INSERT INTO users (email) VALUES ($1) RETURNING *", [profile.email]
+            "INSERT INTO users (email) VALUES ($1, $2) RETURNING *", [profile.email, google]
           );
           return cb(null, newUser.rows[0]);
       } else {
