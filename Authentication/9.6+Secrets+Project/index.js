@@ -67,6 +67,7 @@ app.get("/secrets", async (req, res) => {
     }
     catch(error){
       console.log(error);
+       res.status(500).send("Unable to get secrets");
     }
     //TODO: Update this to pull in the user secret to render in secrets.ejs
   } else {
