@@ -69,7 +69,6 @@ app.get("/secrets", async (req, res) => {
       console.log(error);
        res.status(500).send("Unable to get secrets");
     }
-    //TODO: Update this to pull in the user secret to render in secrets.ejs
   } else {
     res.redirect("/login");
   }
@@ -84,8 +83,7 @@ app.get("/submit", async (req, res) => {
     res.redirect("/login");
   }
 });
-//TODO: Add a get route for the submit button
-//Think about how the logic should work with authentication.
+
 
 app.get(
   "/auth/google",
@@ -155,7 +153,10 @@ app.post("/submit", async (req, res) => {
 
 
   try{
-    const result = await db.query("UPDATE users SET secrets = $1 WHERE email = $2", [typedSecret, req.user.email]);
+    const result = await db.query(
+      "UPDATE users SET secrets = $1 WHERE email = $2", 
+      [typedSecret, req.user.email]
+    );
     console.log("rows affected", result.rowCount);
     res.redirect("/secrets");
   }
@@ -165,8 +166,6 @@ app.post("/submit", async (req, res) => {
   } 
 });
 
-//TODO: Create the post route for submit.
-//Handle the submitted data and add it to the database
 
 passport.use(
   "local",
