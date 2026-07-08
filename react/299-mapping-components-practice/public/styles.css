@@ -1,0 +1,44 @@
+body{
+    background-color: black;
+    color: white;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.dictionary {
+    background-color: green;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    width: 80vw;
+    border-radius: 10px;
+    gap: 20px;
+    padding: 20px;
+}
+
+.term{
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+}
+
+.one, .two, .three{
+    background-color: aqua;
+    border-radius: 10px;
+    border: 3px solid red;
+    height: max-content;
+    flex: 1 1 250px;
+    max-width: 350px;
+    box-sizing: border-box;
+}
