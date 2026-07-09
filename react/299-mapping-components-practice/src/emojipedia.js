@@ -14,7 +14,7 @@ const emojipedia = [
       "Two hands pressed together. Is currently very introverted, saying a prayer, or hoping for enlightenment. Is also used as a “high five” or to say thank you."
   },
   {
-    id: 3,nn
+    id: 3,
     emoji: "🤣",
     name: "Rolling On The Floor, Laughing",
     meaning:
