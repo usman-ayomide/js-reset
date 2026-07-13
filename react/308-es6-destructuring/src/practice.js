@@ -1,8 +1,6 @@
 const cars = [
   {
     model: "Honda Civic",
-    //The top colour refers to the first item in the array below:
-    //i.e. hondaTopColour = "black"
     coloursByPopularity: ["black", "silver"],
     speedStats: {
       topSpeed: 140,

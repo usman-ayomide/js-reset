@@ -1,4 +1,3 @@
-// CHALLENGE: uncomment the code below and see the car stats rendered
 import ReactDOM from "react-dom/client";
 //import animals, { useAnimals } from "./data";
 import cars from "./practice";
@@ -11,30 +10,42 @@ import cars from "./practice";
 //console.log(food);
 
 
-const [tesla, honda] = cars;
-const {model, coloursByPopularity, speedStats: {topSpeed, zeroToSixty}} = [tesla, honda];
+const [honda, tesla] = cars;
 
-console.log(topSpeed);
-// console.log(tesla, honda)
-// console.log(cars)
+const {
+    speedStats: {topSpeed: hondaTopSpeed},
+    coloursByPopularity: [hondaTopColour]
+} = honda;
+
+const {
+    speedStats: {topSpeed: teslaTopSpeed},
+    coloursByPopularity: [teslaTopColour]
+} = tesla;
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <table>
-    <tr>
-      <th>Brand</th>
-      <th>Top Speed</th>
-    </tr>
-    <tr>
-      <td>{tesla.model}</td>
-      <td>{teslaTopSpeed}</td>
-      <td>{teslaTopColour}</td>
-    </tr>
-    <tr>
-      <td>{honda.model}</td>
-      <td>{hondaTopSpeed}</td>
-      <td>{hondaTopColour}</td>
-    </tr>
+    <thead>
+        <tr>
+        <th>Brand</th>
+        <th>Top Speed</th>
+        <th>Top Color</th>
+        </tr>        
+    </thead>
+
+    <tbody>
+        <tr>
+        <td>{tesla.model}</td>
+        <td>{teslaTopSpeed}</td>
+        <td>{teslaTopColour}</td>
+        </tr>
+        <tr>
+        <td>{honda.model}</td>
+        <td>{hondaTopSpeed}</td>
+        <td>{hondaTopColour}</td>
+        </tr>
+    </tbody>
+        
   </table>
 );
