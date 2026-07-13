@@ -1,18 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App(){
-  setInterval(getTime, 1000);
-
   const [time, setTime] = useState(new Date().toLocaleTimeString());
 
-  function getTime(){
-    setTime(new Date().toLocaleTimeString())
-  }
+  useEffect(() => {
+    const id = setInterval(() => {
+      setTime(new Date().toLocaleTimeString());
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
 
   return(
     <div className="container">
       <h1>{time}</h1>
-      <button onClick={getTime}>Get Time</button>
     </div>
   );
 }
