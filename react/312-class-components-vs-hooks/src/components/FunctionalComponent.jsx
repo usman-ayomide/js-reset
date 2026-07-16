@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 function FunctionalComponent() {
   const [count, setCount] = useState(0);
