@@ -7,11 +7,10 @@ function App() {
 
   function handleChange(e){
     setName(e.target.value);
-
-    e.preventDefault();
   }
 
-  function updateName(){
+  function updateName(e){
+    e.preventDefault();
     setSubmittedName(name);
   }
 
@@ -20,13 +19,13 @@ function App() {
     <div className="container">
       <h1>Hello {submittedName}</h1>
 
-      <form onSubmit={handleChange}>
+      <form onSubmit={updateName}>
         <input 
           onChange={handleChange}
           type="text" placeholder="What's your name?" 
           value={name}
         />
-        <button onClick={updateName}>Submit</button>
+        <button type="submit">Submit</button>
       </form>
       
     </div>
