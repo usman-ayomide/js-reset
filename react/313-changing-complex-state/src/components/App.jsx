@@ -4,27 +4,21 @@ function App() {
   const [inputName, setInputName] = useState({
     fName: "", lName: ""
   });
-  //const [submittedName, setSubmittedName] = useState("");
-  //console.log(inputName);
-
+  
   function handleChange(e){
     const {name, value} = e.target;
-    //console.log(name, value)
+    console.log(e.target);
 
     setInputName((previous) => ({
-      ...previous, [name]: value
-  }));
+      ...previous, [name] : value
+    }));
   }
 
   function handleSubmit(e){
     e.preventDefault();
-    //setSubmittedName(inputName);
-    //console.log(submittedName.fName)
   }
 
   
-
-
   return (
     <div className="container">
       <h1>Hello {inputName.fName} {inputName.lName}</h1>
