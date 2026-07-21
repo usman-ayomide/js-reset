@@ -9,7 +9,7 @@ function App() {
   }
 
   function addTodo(e){
-    if(input.length === "") return;
+    if(input.length === 0) return;
     else {
       setUpdate((previous) => [
         ...previous, input
@@ -35,9 +35,9 @@ function App() {
 
       <div>
         <ul>
-          {update.map((input, index => 
-            <li key={index}>{input}</li>
-          ))}
+          {update.map((todo, index) => 
+            <li key={index}>{todo}</li>
+          )}
         </ul>
       </div>
     </div>
