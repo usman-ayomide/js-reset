@@ -1,23 +1,23 @@
 import { useState } from "react";
 
 function App() {
-  const [input, setInput] = useState({
-    todo: ""
-  });
+  const [input, setInput] = useState("");
+  const [update, setUpdate] = useState([]);
 
   function handleChange(e){
-    const {todo, value} = e.target
-    
-    setInput((previous) => ({
-      ...previous, [todo] : value
-    }))
-  }
-  
-
-  function handleSubmit(e){
-    e.preventDefault();
+    setInput(e.target.value);
   }
 
+  function addTodo(e){
+    if(input.length === "") return;
+    else {
+      setUpdate((previous) => [
+        ...previous, input
+      ]);
+
+      setInput("");
+    }
+  }
 
 
   return (
@@ -26,16 +26,18 @@ function App() {
         <h1>To-Do List</h1>
       </div>
 
-      <div className="form" onSubmit={handleSubmit}>
-        <input type="text" name="todo" value={input.todo} onChange={handleChange}/>
-        <button type="submit">
+      <div className="form">
+        <input type="text" value={input} onChange={handleChange}/>
+        <button type="submit" onClick={addTodo}>
           <span>Add</span>
         </button>
       </div>
 
       <div>
         <ul>
-          <li>{input}</li>
+          {update.map((input, index => 
+            <li key={index}>{input}</li>
+          ))}
         </ul>
       </div>
     </div>
