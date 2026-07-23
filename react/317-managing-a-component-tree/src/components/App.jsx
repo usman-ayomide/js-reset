@@ -1,7 +1,7 @@
 import { useState } from "react";
 import TodoItem from "./TodoItem";
 
-function App(props) {
+function App() {
   const [inputText, setInputText] = useState("");
   const [items, setItems] = useState([]);
 

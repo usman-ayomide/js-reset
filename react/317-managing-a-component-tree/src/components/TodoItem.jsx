@@ -1,7 +1,17 @@
+import { useState } from "react";
+
 function TodoItem(props){
-    return (
-        <li>{props.text}</li>
-    );
+  const [cross, setCross] = useState(false)
+
+  function line(){
+    setCross(true);
+  }
+  
+  return (
+    <li style={{textDecoration: !cross ? "" : "line-through"}}
+      onClick={line}
+    >{props.text}</li>
+  );
 }
 
 export default TodoItem;
