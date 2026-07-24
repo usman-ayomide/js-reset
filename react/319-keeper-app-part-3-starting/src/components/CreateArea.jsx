@@ -3,10 +3,10 @@ function CreateArea(props) {
     <div>
       <form onSubmit={props.submit}>
         <input name="title" placeholder="Title" 
-          value={props.content.title} onChange={props.change}
+          value={props.formData.title} onChange={props.change}
         />
-        <textarea name="content" placeholder="Take a note..." 
-          rows="3" value={props.content.content}
+        <textarea name="body" placeholder="Take a note..." 
+          rows="3" value={props.formData.body} onChange={props.change}
         />
         <button type="submit">Add</button>
       </form>

@@ -7,19 +7,39 @@ import { useState } from "react";
 
 
 function App() {
-  const [content, setContent] = useState({
-    title: "", content: ""
+  //store the input data as initial empty strings
+  const [formData, setFormData] = useState({
+    title: "", body: ""
   });
+  //notes array as initial empty array
+  const [notes, setNotes] = useState([]);
 
-  function handleChange(){
+  function handleChange(e){
+    //destructure name and value of the inputs and save as the 
+    //target value
     const {name, value} = e.target;
 
-    setContent((previous) => ({
+    //take everything in the formaData 
+    // and set it to the new object
+    setFormData((previous) => ({
       ...previous, [name] : value
     }));
   }
+
   function handleSubmit(e){
+    //prevent default behaviour
     e.preventDefault();
+
+    //add new form data to noes array
+    //push new data into the array
+    setNotes((previous) => {
+      return [...previous, formData]
+    });
+
+    //set the form data back to empty strings
+    setFormData({
+      title: "", body: ""
+    });
   }
   
 
@@ -27,9 +47,14 @@ function App() {
     <div>
       <Header />
       <CreateArea 
-        value={content} change={handleChange} submit={handleSubmit}
+        value={formData} change={handleChange} submit={handleSubmit}
       />
-      <Note key={1} title="Note title" content="Note content" />
+      {notes.map((note, index) => {
+        return (<Note 
+          key={index} title={note.title} noteContent={note.body}
+        />);
+      })}
+      
       <Footer />
     </div>
   );
