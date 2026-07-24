@@ -5,7 +5,6 @@ import CreateArea from "./CreateArea";
 import { useState } from "react";
 
 
-
 function App() {
   //store the input data as initial empty strings
   const [formData, setFormData] = useState({
@@ -13,6 +12,7 @@ function App() {
   });
   //notes array as initial empty array
   const [notes, setNotes] = useState([]);
+
 
   function handleChange(e){
     //destructure name and value of the inputs and save as the 
@@ -25,6 +25,7 @@ function App() {
       ...previous, [name] : value
     }));
   }
+
 
   function handleSubmit(e){
     //prevent default behaviour
@@ -41,17 +42,27 @@ function App() {
       title: "", body: ""
     });
   }
-  
 
+  function deleteNote(id){
+    //return array of notes where id is not what is clicked
+    setNotes(previous => {
+      return previous.filter((note, index) => {
+        return index !== id;
+      });
+    });
+  }
+  
   return (
     <div>
       <Header />
+
       <CreateArea 
         value={formData} change={handleChange} submit={handleSubmit}
       />
       {notes.map((note, index) => {
         return (<Note 
           key={index} title={note.title} noteContent={note.body}
+          onDelete={deleteNote} id={index}
         />);
       })}
       
